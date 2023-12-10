@@ -176,7 +176,7 @@ const renderData = (data) => {
         }
         renderData(filterData);
     });
-    
+    // 新增套票功能
     const ticketName = document.querySelector('#ticketName');
     const ticketImgUrl = document.querySelector('#ticketImgUrl');
     const ticketRegion = document.querySelector('#ticketRegion');
@@ -187,7 +187,19 @@ const renderData = (data) => {
     
     const addTicketBtn = document.querySelector('.addTicket-btn');
     
-    
+    function addData (){
+        let newData = {
+            id : data.length +1,
+            name : ticketName.value,
+            imgUrl : ticketImgUrl.value,
+            area : ticketRegion.value,
+            description : ticketDescription.value,
+
+
+        }
+    }
+
+
     function init(){
         renderData(data);
     }
