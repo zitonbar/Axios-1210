@@ -1,4 +1,4 @@
-// 原第五週 javascript 程式碼內容 開始
+// workFive javascript 程式碼內容 開始
 
 // let data = [
 //     {
@@ -81,8 +81,22 @@
 //   renderData(data);
 // }
 // init();
+// 新增地區篩選功能
+// const regionSearch = document.querySelector('.regionSearch');
+// regionSearch.addEventListener("change",function(e) {
+//   let filterData;
+//   if (e.target.value === ""){
+//     filterData = data;
+//   }else {
+//     filterData = data.filter(function (item){
+//       return e.target.value === item.area;
+//     })
+//   }
+//   renderData(filterData);
+// });
 
-// javascript 結束
+
+// workFive javascript 結束
 
 // https://hexschool.github.io/ajaxHomework/data.json
 
@@ -101,16 +115,80 @@ let data = [];
 
 axios.get('https://raw.githubusercontent.com/hexschool/js-training/main/travelAPI-lv1.json')
     .then(function (response) {
-        console.log(response);
-        console.log(response.data[0]);
-        console.log(response.status);
-        console.log(response.statusText);
         data = response.data;
-        renderData();
+        // console.log(data);
+        renderData(data);
     })
     .catch(function (err) {
         console.log(err);
-    })
-function renderData (){
-    console.log(data);
-}
+    });
+
+const ticketCardArea = document.querySelector(".ticketCard-area");
+// console.log(ticketCardArea);
+
+const searchResult = document.querySelector("#searchResult-text");
+// console.log(searchResult);
+const renderData = (data) => {
+    let cardList = "";
+    // console.log(renderData);
+        data.forEach((item) => {
+            cardList +=`
+            <li class="ticketCard">
+                <div class="ticketCard-img">
+                    <a href="#">
+                    <img src="${item.imgUrl}" alt="">
+                    </a>
+                    <div class="ticketCard-region">${item.area}</div>
+                    <div class="ticketCard-rank">${item.rate}</div>
+                </div>
+                <div class="ticketCard-content">
+                    <div>
+                        <h3>
+                            <a href="#" class="ticketCard-name">${item.name}</a>
+                        </h3>
+                        <p class="ticketCard-description">${item.description}</p>
+                    </div>
+                    <div class="ticketCard-info">
+                        <p class="ticketCard-num">
+                            <span><i class="fas fa-exclamation-circle"></i></span>
+                            剩下最後<span id="ticketCard-num">${item.group}</span> 組
+                        </p>
+                        <p class="ticketCard-price">TWD  
+                        <span id="ticketCard-price">$${item.price}</span>
+                        </p>
+                    </div>
+                </div>
+            </li>`;
+        });
+        ticketCardArea.innerHTML = cardList;
+        searchResult.innerHTML = `本次搜尋共 ${data.length} 筆資料`;
+    }
+    
+    const regionSearch = document.querySelector('.regionSearch');
+    regionSearch.addEventListener("change",function(e){
+        let filterData;
+        if(e.target.value === ""){
+            filterData = data;
+        }else{
+            filterData = data.filter(function(item){
+                return e.target.value === item.area;
+            })
+        }
+        renderData(filterData);
+    });
+    
+    const ticketName = document.querySelector('#ticketName');
+    const ticketImgUrl = document.querySelector('#ticketImgUrl');
+    const ticketRegion = document.querySelector('#ticketRegion');
+    const ticketPrice = document.querySelector('#ticketPrice');
+    const ticketNum = document.querySelector('#ticketNum');
+    const ticketRate = document.querySelector('#ticketRate');
+    const ticketDescription = document.querySelector('#ticketDescription');
+    
+    const addTicketBtn = document.querySelector('.addTicket-btn');
+    
+    
+    function init(){
+        renderData(data);
+    }
+    init();
